@@ -14,6 +14,8 @@ namespace Notes
     {
         public static void Main(string[] args)
         {
+            Console.Title = "Notes";
+
             BuildWebHost(args).Run();
         }
 

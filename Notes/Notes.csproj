@@ -1,14 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
+    <UserSecretsId>afedfcd1-43a8-42e2-bb29-3bf5c44fab40</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +23,26 @@
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Content Remove="ClientApp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\components\Home\Chat.tsx" />
+    <None Remove="ClientApp\components\Home\Users.tsx" />
+    <None Remove="ClientApp\services\ChatService.tsx" />
+    <None Remove="ClientApp\services\Models\ChatMessage.tsx" />
+    <None Remove="ClientApp\services\Models\User.tsx" />
+    <None Remove="ClientApp\services\UsersService.tsx" />
+    <None Remove="ClientApp\services\WebSocketService.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\components\Home\Chat.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\Home\Users.tsx" />
+    <TypeScriptCompile Include="ClientApp\services\ChatService.tsx" />
+    <TypeScriptCompile Include="ClientApp\services\Models\ChatMessage.tsx" />
+    <TypeScriptCompile Include="ClientApp\services\Models\User.tsx" />
+    <TypeScriptCompile Include="ClientApp\services\UsersService.tsx" />
+    <TypeScriptCompile Include="ClientApp\services\WebSocketService.tsx" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
@@ -31,7 +56,7 @@
          a different machine, so rebuild them if not already present. -->
     <Message Importance="high" Text="Performing first-run Webpack build..." />
     <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js" />
-    <Exec Command="node node_modules/webpack/bin/webpack.js" />
+    <!-- <Exec Command="node node_modules/webpack/bin/webpack.js" /> -->
   </Target>
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
