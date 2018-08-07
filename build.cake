@@ -1,4 +1,5 @@
 #addin nuget:?package=Cake.Kudu.Client
+#addin nuget:?package=Cake.WebDeploy
 
 string  baseUriApp     = EnvironmentVariable("KUDU_CLIENT_BASEURI_APP"),
         userNameApp    = EnvironmentVariable("KUDU_CLIENT_USERNAME_APP"),
@@ -70,27 +71,23 @@ Task("Deploy")
 	.IsDependentOn("Publish")
 	.Does(() => 
 	{
-		var kuduClient = KuduClient(
-			 baseUriApp,
-			 userNameApp,
-			 passwordApp);
-		var sourceDirectoryPath = "./publish/Notes/";
-		var remoteDirectoryPath = "/site/wwwroot/";
+		DeployWebsite(new DeploySettings()
+        {
+            SourcePath = "./publish/Notes/",
+            SiteName = userNameApp,
+            ComputerName = "https://" + baseUriApp + "/msdeploy.axd?site=" + userNameApp,
+            Username = "$" + userNameApp,
+            Password = passwordApp
+        });
 
-		kuduClient.ZipUploadDirectory(
-			sourceDirectoryPath,
-			remoteDirectoryPath);
-
-		kuduClient = KuduClient(
-			 baseUriIdent,
-			 userNameIdent,
-			 passwordIdent);
-		sourceDirectoryPath = "./publish/NotesIdentities/";
-		remoteDirectoryPath = "/site/wwwroot/";
-
-		kuduClient.ZipUploadDirectory(
-			sourceDirectoryPath,
-			remoteDirectoryPath);
+		DeployWebsite(new DeploySettings()
+        {
+            SourcePath = "./publish/NotesIdentities/",
+            SiteName = userNameIdent,
+            ComputerName = "https://" + baseUriIdent + "/msdeploy.axd?site=" + userNameIdent,
+            Username = "$" + userNameIdent,
+            Password = passwordIdent
+        });
 	});
 
 Task("Default")
