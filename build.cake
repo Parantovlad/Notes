@@ -59,11 +59,11 @@ Task("Publish")
 		var settings = new DotNetCorePublishSettings
 		{
 			Configuration = "Release",
-			OutputDirectory = "./publish/Notes/",
+			OutputDirectory = "../ReactNotes/",
 			NoRestore = true
 		};
 		DotNetCorePublish("./Notes/Notes.csproj", settings);
-		settings.OutputDirectory = "./publish/NotesIdentities/";
+		settings.OutputDirectory = "../ReactNotesIdentities/";
 		DotNetCorePublish("./NotesIdentities/NotesIdentities.csproj", settings);
 	});
 
@@ -73,7 +73,7 @@ Task("Deploy")
 	{
 		DeployWebsite(new DeploySettings()
         {
-            SourcePath = "./publish/Notes/",
+            SourcePath = "../ReactNotes/",
             SiteName = userNameApp,
             ComputerName = "https://" + baseUriApp + "/msdeploy.axd?site=" + userNameApp,
             Username = "$" + userNameApp,
@@ -82,7 +82,7 @@ Task("Deploy")
 
 		DeployWebsite(new DeploySettings()
         {
-            SourcePath = "./publish/NotesIdentities/",
+            SourcePath = "../ReactNotesIdentities/",
             SiteName = userNameIdent,
             ComputerName = "https://" + baseUriIdent + "/msdeploy.axd?site=" + userNameIdent,
             Username = "$" + userNameIdent,
